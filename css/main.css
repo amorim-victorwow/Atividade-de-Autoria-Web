@@ -1,0 +1,826 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap'); /* Fonte do Logotipo importada do Google Fonts */
+
+:root { /* Variáveis */
+    --white1: #FFFFFF;
+    --white2: #E4E4E4;
+    --black1: #000000;
+    --blue1: #0A2833;
+    --blue2: #29ABE2;
+    --blue3: #051E27;
+    --blue4: #7ADCFF90;
+    --border-gray: #0A28339F;
+    --font-main: Arial, Helvetica, sans-serif;
+    --font-red-hat: "Red Hat Display", sans-serif;
+}
+
+.material-symbols-outlined { /* Coisas do Google Fonts */
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+h1, h2, h3, h4, h5, h6, p, button, a, q, table, div, span, header, main, footer, article, aside, figure, figcaption {
+    margin: 0;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding-block: 3px;
+    color: var(--white1);
+    background-color: transparent;
+    z-index: 2;
+}
+
+header:not(:has(#background-header)) { /* Todos os outros headers das outras páginas terão que serem retirados essa div #background-header, para que assim não fiquem com a animação do fundo da tela e acabem ficando meio bugados */
+    color: var(--black1);
+    background-color: var(--white1);
+    border-bottom: 1px solid lightgray;
+}
+
+header.scrolled {
+    color: var(--black1);
+}
+
+header #background-header {
+    width: 100%;
+    height: 0;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    background-color: var(--white1);
+    transition: height .5s cubic-bezier(.47, .89, .55, .81), border-bottom .5s cubic-bezier(.47, .89, .55, .81); /* Animação de descida do fundo */
+}
+
+header.scrolled #background-header {
+    height: 66px; /* Altura do "header" */
+    border-bottom: 1px solid lightgray;
+}
+
+header *, nav, nav ul, nav ul li, nav ul li a, .icons-menu, .icons-menu li, .icons-menu li a { /* Caso mudar o "color" do header, todos os outros elementos também mudarão de cor */
+    color: inherit;
+    transition: color .2s cubic-bezier(.47, .89, .55, .81);
+}
+
+header nav ul li > a, header .icons-menu li > a {
+    text-decoration: none;
+}
+
+header > a {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 1rem;
+    font-family: var(--font-red-hat);
+    text-decoration: none;
+    transition: color .1s ease;
+}
+
+header > a:hover {
+    color: var(--blue1);
+}
+
+header > a img {
+    filter: invert(100%);
+    width: 100px;
+    transition: filter .3s ease;
+}
+
+header > a:hover img, header.scrolled > a img, header:not(:has(#background-header)) > a img {
+    filter: invert(12%) sepia(14%) saturate(2496%) hue-rotate(150deg) brightness(92%) contrast(95%);
+}
+
+header > a h1 {
+    font-size: 1.6rem;
+    font-family: inherit;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+header nav ul li a {
+    display: inline-block;
+    font-weight: bold;
+    padding-block: 2px 1px;
+    border-bottom: 1px solid transparent; /* Uma "borda" vai servir como um "underline" */
+    transition: border-bottom-color .2s ease;
+}
+
+header nav ul li a:hover {
+    border-bottom-color: inherit;
+}
+
+header nav ul li a span {
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+header nav ul li:has(.dropdown-booking) {
+    position: relative;
+}
+
+header nav ul li .dropdown-booking {
+    color: var(--black1);
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    width: 335px; /* Definimento do tamanho EXTREMAMENTE ruim, mas to com preguiça de melhorá-lo */
+    background-color: var(--white1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 15px;
+    border-radius: 3px;
+    translate: 0 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease, visibility 0s .3s ease, translate .3s ease;
+}
+
+header nav ul li:has(.dropdown-booking) a:hover ~ .dropdown-booking, header nav ul li .dropdown-booking:hover {
+    translate: 0 0;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .3s ease, visibility 0s 0s ease, translate .3s ease;
+}
+
+header nav ul li .dropdown-booking a {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: normal;
+    padding: 0;
+    border-bottom: 0;
+}
+
+header nav ul li .dropdown-booking a + a {
+    margin-top: 15px;
+}
+
+header nav ul li .dropdown-booking .booking-options span {
+    display: block;
+}
+
+header nav ul li .dropdown-booking .booking-options > span:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+header nav ul li .dropdown-booking .booking-options:hover .dropdown-booking-content {
+    text-decoration: underline;
+}
+
+header nav ul li .dropdown-booking .booking-options > span:last-child {
+    color: gray;
+    font-size: .9rem;
+    text-indent: 30px; /* Forma EXTREMAMENTE ruim de adicionar espaçamento do texto debaixo */
+    margin-top: 3px;
+}
+
+header .icons-menu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+header .icons-menu li {
+    display: inline-block;
+    font-size: inherit;
+}
+
+header .icons-menu a {
+    display: inline-block;
+    font-size: inherit;
+    text-decoration: none;
+    transition: background-color .2s ease;
+}
+
+header .icons-menu > li:not(:has(.dropdown-languages)) a { /* O último não vai ter um "quadrado branco" atrás dele quando for :hover */
+    padding: 2px 3px 0px 3px;
+    border-radius: 3px;
+}
+
+header .icons-menu > li:not(:has(.dropdown-languages)) a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+header.scrolled .icons-menu > li:not(:has(.dropdown-languages)) a:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+header .icons-menu li:has(.dropdown-languages) {
+    position: relative;
+}
+
+header .icons-menu li:has(.dropdown-languages) > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1px;
+    font-weight: bold;
+    border-left: 3px solid gray;
+    padding-left: 10px;
+}
+
+header .icons-menu  li:has(.dropdown-languages) a:hover span:first-child {
+    text-decoration: underline;
+}
+
+header .icons-menu .dropdown-languages { /* Só Deus sabe como diabos essa coisa para o dropdown funciona */
+    color: var(--black1);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: var(--white1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    padding: 15px;
+    border-radius: 3px;
+    translate: 0 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s ease, visibility 0s .3s ease, translate .3s ease;
+}
+
+header .icons-menu .dropdown-languages :where(li, a) {
+    display: block;
+}
+
+header .icons-menu .dropdown-languages li + li {
+    margin-top: 7px;
+}
+
+header .icons-menu .dropdown-languages li a:hover {
+    text-decoration: underline;
+}
+
+header .icons-menu .dropdown-languages li.language-selected a {
+    color: var(--blue2);
+    text-decoration: underline;
+}
+
+header .icons-menu li:has(.dropdown-languages) a:hover ~ .dropdown-languages, header .icons-menu .dropdown-languages:hover {
+    translate: 0 0;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .3s ease, visibility 0s 0s ease, translate .3s ease;
+}
+
+.main-page-header {
+    width: 100%;
+    height: 605px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+}
+
+.main-page-header img { /* A Imagem de fundo vai usar um "position: absolute;" pro fundo dessa div inteira */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%); /* Deixar ela mais "escura" */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Evitar que fique por cima dos itens */
+}
+
+.main-page-header .main-text {
+    color: var(--white1);
+    font-size: 1.1rem;
+    max-width: 400px;
+}
+
+.main-page-header .main-text h1 {
+    font-size: 2.2rem;
+}
+
+.main-page-header .main-text p {
+    padding-block: 10px;
+}
+
+.main-page-header .main-text button {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 0;
+    border-radius: 4px;
+    outline: 0;
+    background-color: var(--white1);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    transition: background-color .2s ease, box-shadow .2s ease;
+    cursor: pointer;
+}
+
+.main-page-header .main-text button:hover {
+    background-color: var(--white2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.main-page-header .options {
+    padding: 20px 25px;
+    border-radius: 8px;
+    background-color: var(--white1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.main-page-header .options input[type="radio"] {
+    display: none;
+}
+
+.main-page-header .options .labels-windows {
+    margin-bottom: 35px;
+}
+
+.main-page-header .options .labels-windows label {
+    display: inline-block;
+    border-bottom: 4px solid transparent;
+    padding-bottom: 4px;
+    transition: border-bottom-color .2s ease;
+    cursor: pointer;
+}
+
+.main-page-header .options .labels-windows label ~ label {
+    margin-left: 25px;
+}
+
+.main-page-header .options .labels-windows input[type="radio"]:checked + label {
+    border-bottom-color: var(--blue1);
+}
+
+.main-page-header .options div[class$="-options"] {
+    display: none; /* Esconder todos */
+}
+
+.main-page-header .options .labels-windows:has(#label-window1:checked) ~ .tracking-options, .main-page-header .options .labels-windows:has(#label-window2:checked) ~ .schedules-options, .main-page-header .options .labels-windows:has(#label-window3:checked) ~ .contact-options {
+    display: block; /* Mostrar a parte do quadrado branco corresponder ao marcado */
+}
+
+.main-page-header .options .option-input {
+    display: flex;
+    gap: 5px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid gray;
+    margin-bottom: 20px;
+    transition: border-bottom-color .2s ease;
+}
+
+.main-page-header .options .option-input:hover {
+    border-bottom-color: black;
+}
+
+.main-page-header .options .option-input:has(input:focus) {
+    border-bottom-color: var(--blue1);
+    box-shadow: 0 3px 0 var(--blue4); /* Gerar uma "segunda borda" embaixo */
+}
+
+.main-page-header .options .option-input span {
+    color: gray;
+}
+
+.main-page-header .options .option-input input {
+    border: 0;
+    outline: 0;
+    font-size: .8em;
+    width: 100%;
+}
+
+.main-page-header .options button {
+    color: var(--white1);
+    background-color: var(--blue1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+    padding: 8px 12px;
+    transition: background-color .2s ease, box-shadow .2s ease;
+    cursor: pointer;
+}
+
+.main-page-header .options button:hover {
+    background-color: var(--blue3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.main-page-header .slideshow-labels {
+    position: absolute;
+    bottom: 10px;
+}
+
+.main-page-header .slideshow-labels input[type="radio"] {
+    display: none;
+}
+
+.main-page-header .slideshow-labels label {
+    display: inline-block;
+    border: 4px solid var(--white1);
+    border-radius: 5px;
+    padding: 8px 22px;
+    transition: background-color .2s ease;
+    cursor: pointer;
+}
+
+.main-page-header .slideshow-labels label ~ label {
+    margin-left: 8px;
+}
+
+.main-page-header .slideshow-labels input:checked + label {
+    background-color: var(--white1);
+}
+
+main section {
+    padding-block: 60px;
+}
+
+main section + section {
+    border-top: 5px solid gray;
+}
+
+.wrapper-padding { /* Tag universal para as partes do site ficarem "alinhadas" e com a "mesma largura" */
+    width: min(100dvw, 1100px);
+    padding-inline: 5px;
+    margin-inline: auto;
+}
+
+.list-particularities {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 120px;
+    margin: 0;
+    padding: 0;
+}
+
+.list-particularities li {
+    display: inline-block;
+    border: 4px solid var(--border-gray);
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.list-particularities h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-particularities h2 span.material-symbols-outlined {
+    font-size: 3rem;
+}
+
+main section h2 {
+    font-size: 1.8rem;
+}
+
+main section p {
+    font-size: 1.1rem;
+    margin-block: 15px 10px;
+}
+
+section p {
+    max-width: 52dvw;
+}
+
+.main-sectors-wrapper {
+    display: flex; /* Melhorar esse Flexbox depois */
+    width: 100%;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+.main-sectors-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.list-sectors {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Melhorar essa grid depois */
+    gap: 10px;
+    flex: none;
+}
+
+.list-sectors figure {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: border-color .5s ease;
+}
+
+.list-sectors figure:hover {
+    border-color: lightgray;
+}
+
+.list-sectors figure img {
+    width: 100%;
+}
+
+.list-sectors figure figcaption {
+    font-size: 1.1rem;
+    text-align: center;
+    padding-block: 5px;
+}
+
+.main-sectors-aspects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: end;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.main-sectors-aspects .wrapper-location-bar div.main-sectors-selected {
+    background-color: var(--blue1);
+    width: 30px;
+}
+
+.main-sectors-aspects .wrapper-location-bar div {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: lightgray;
+    transition: width .5s ease, background-color .5s ease;
+}
+
+.main-sectors-control-buttons button {
+    width: 50px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid lightgray;
+    border-radius: 50%;
+    outline: 0;
+    background-color: transparent;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    transition: color .5s ease, box-shadow .5s ease;
+}
+
+.main-sectors-control-buttons button:not(:disabled) {
+    cursor: pointer;
+}
+
+.main-sectors-control-buttons button + button {
+    margin-left: 5px;
+}
+
+.main-sectors-control-buttons button:not(:disabled):hover {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.seilhav-numbers ul {
+    background: url("../images/oil-plataform.png") center center / cover no-repeat var(--blue3);
+    list-style-type: none;
+    margin: 0;
+    padding: 300px 25px 40px 25px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+}
+
+.seilhav-numbers ul li {
+    color: var(--white1);
+    padding-block: 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.seilhav-numbers ul li:nth-child(1) {
+    background-color: #2D2E38;
+}
+
+.seilhav-numbers ul li:nth-child(2) {
+    background-color: #1F3C86;
+}
+
+.seilhav-numbers ul li:nth-child(3) {
+    background-color: #525763;
+}
+
+.seilhav-numbers ul li:nth-child(4) {
+    background-color: #5B5C61;
+}
+
+.seilhav-numbers ul li p {
+    text-align: center;
+    margin: 0;
+}
+
+.seilhav-numbers ul li p.seilhav-item-number {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.seilhav-numbers ul li p.seilhav-item-description {
+    font-size: 1.25rem;
+}
+
+.list-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.list-news > article {
+    color: var(--white1);
+    font-weight: bold;
+    padding: 220px 25px 20px 25px;
+    border-radius: 5px;
+    background-color: var(--black1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* "apaga" a parte que "sai pra fora" da imagem */
+    transition: box-shadow .5s ease;
+    cursor: pointer;
+}
+
+.list-news > article img { /* Gambiarra do cacete ;-; */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute; /* Imagem ocupa todo o fundo do article usando position absolute */
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: scale .5s ease;
+}
+
+.list-news > article:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.list-news > article:hover img {
+    scale: 1.2; /* Efeito de Zoom */
+}
+
+.list-news > article p {
+    font-size: .9rem;
+    margin-block: 0 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.list-news > article p span.new-category {
+    text-decoration: underline;
+}
+
+.list-news > article h3 {
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 2;
+}
+
+footer {
+    background-color: var(--blue1);
+    padding-inline: max(5px, calc((100dvw - 1100px) / 2));
+    color: var(--white1);
+}
+
+footer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer li, footer .footer-links :is(.footer-social-media, .footer-apps) li {
+    margin: 0;
+}
+
+footer li a {
+    color: var(--white1);
+    text-decoration: none;
+}
+
+footer li a:hover {
+    text-decoration: underline;
+}
+
+footer .footer-links {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 10px;
+}
+
+footer .footer-links section {
+    padding-block: 60px 10px;
+}
+
+footer .footer-links h2 {
+    font-size: 1.7rem;
+    margin-bottom: 18px;
+}
+
+footer .footer-links li {
+    margin-block: 12px;
+}
+
+footer .footer-links section:last-child {
+    justify-self: end;
+}
+
+footer .footer-social-media {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+footer .footer-social-media li a {
+    font-size: 2rem;
+    transition: color .5s ease;
+}
+
+footer .footer-social-media li a:hover {
+    color: var(--blue2);
+}
+
+footer .footer-apps {
+    display: flex;
+    justify-content: space-between;
+}
+
+footer .footer-apps img {
+    display: block;
+    max-width: 130px;
+}
+
+footer .footer-copyright {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid var(--white1);
+    padding-block: 10px;
+}
+
+footer .footer-copyright .footer-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--white1);
+}
+
+footer .footer-copyright .footer-logo img {
+    filter: invert(100%);
+    width: 120px;
+}
+
+footer .footer-copyright .footer-logo h1 {
+    font-family: var(--font-red-hat);
+}
+
+footer .footer-copyright .footer-text p {
+    text-transform: uppercase;
+}
+
+/* Ver oq é isso dps */
+.search {
+    background-color: white;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border: 2px solid gray;
+    border-radius: 2px;
+    outline: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    transition: background-color .5s ease;
+}
+
+.search:focus {
+    background-color: #daebf3;
+}
